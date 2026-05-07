@@ -156,7 +156,7 @@
                 style="width: 100%; max-width: 300px; padding: 12px 16px; border-radius: 8px; border: 1px solid #e2e8f0; background: #f8fafc; font-family: 'Inter', sans-serif; font-size: 15px; color: #2d3748; cursor: pointer; outline: none; box-shadow: 0 2px 5px rgba(0,0,0,0.02); transition: all 0.2s ease;">
                 <option value="">All Projects</option>
                 {% for p in projects %}
-                <option value="{{ p.id }}" {% if selected_project_id==p.id %}selected{% endif %}>{{ p.title }}</option>
+                <option value="{{ p.id }}" {% if selected_project_id == p.id %}selected{% endif %}>{{ p.title }}</option>
                 {% endfor %}
             </select>
         </form>
