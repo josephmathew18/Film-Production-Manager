@@ -161,7 +161,8 @@
 <input type="date" name="release_date" value="{{ project.release_date|date:'Y-m-d'|default_if_none:'' }}" style="width: 100%; padding: 14px 16px; margin: 0 0 20px; border-radius: 8px; border: 1px solid #e2e8f0; background: #f8fafc; font-family: 'Inter', sans-serif; font-size: 15px; color: #2d3748; box-sizing: border-box;">
 
 <input type="text" name="language" value="{{ project.language|default_if_none:'' }}" placeholder="Language (Optional)">
-<input type="text" name="running_time" value="{{ project.running_time|default_if_none:'' }}" placeholder="Running Time (e.g., 120 mins) (Optional)">
+<label style="display:block; text-align:left; color:#4a5568; font-weight:500; font-size:14px; margin-bottom:5px;">Running Time (hr:min:ss):</label>
+<input type="time" step="1" name="running_time" value="{{ project.running_time|default_if_none:'' }}" style="width: 100%; padding: 14px 16px; margin: 0 0 20px; border-radius: 8px; border: 1px solid #e2e8f0; background: #f8fafc; font-family: 'Inter', sans-serif; font-size: 15px; color: #2d3748; box-sizing: border-box;">
 
 {% if project.script %}
 <div class="current-file">
