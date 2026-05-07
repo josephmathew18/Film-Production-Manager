@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Plan Shooting Schedule</title>
     <style>
@@ -40,7 +41,7 @@
             border-radius: 8px;
             font-weight: 600;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
             border: 1px solid #e1e8ed;
         }
 
@@ -57,12 +58,14 @@
             background: rgba(255, 255, 255, 0.95);
             padding: 40px;
             border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(10px);
             text-align: center;
         }
 
-        input[type="text"], input[type="date"], select {
+        input[type="text"],
+        input[type="date"],
+        select {
             width: 100%;
             padding: 14px 16px;
             margin: 10px 0 20px;
@@ -76,7 +79,9 @@
             transition: all 0.2s ease;
         }
 
-        input[type="text"]:focus, input[type="date"]:focus, select:focus {
+        input[type="text"]:focus,
+        input[type="date"]:focus,
+        select:focus {
             outline: none;
             border-color: #4a90e2;
             background: #ffffff;
@@ -113,42 +118,45 @@
         }
     </style>
 </head>
+
 <body>
 
-<h2>📅 Add Shooting Schedule</h2>
+    <h2> Add Shooting Schedule</h2>
 
-<div class="nav">
-    {% if project %}
-    <a href="/project/{{ project.id }}/">⬅️ Back to {{ project.title }}</a>
-    {% endif %}
-    <a href="/home/">🏠 Projects</a>
-    <a href="/dashboard/">📊 Dashboard</a>
-</div>
+    <div class="nav">
+        {% if project %}
+        <a href="/project/{{ project.id }}/"> Back to {{ project.title }}</a>
+        {% endif %}
+        <a href="/home/">Projects</a>
+        <a href="/dashboard/">Dashboard</a>
+    </div>
 
-<div class="container">
-<form method="post">
-{% csrf_token %}
+    <div class="container">
+        <form method="post">
+            {% csrf_token %}
 
-<label>Shoot Date</label>
-<input type="date" name="date" required>
+            <label>Shoot Date</label>
+            <input type="date" name="date" required>
 
-<label>Scene to Shoot</label>
-<select name="scene" required>
-    <option value="" disabled selected>Select Scene</option>
-    {% for s in scenes %}
-        <option value="{{ s.id }}">{% if not project %}{{ s.project.title }} - {% endif %}{{ s.title }} ({{ s.duration }} mins, {{ s.location }})</option>
-    {% empty %}
-        <option value="" disabled>No scenes created yet</option>
-    {% endfor %}
-</select>
+            <label>Scene to Shoot</label>
+            <select name="scene" required>
+                <option value="" disabled selected>Select Scene</option>
+                {% for s in scenes %}
+                <option value="{{ s.id }}">{% if not project %}{{ s.project.title }} - {% endif %}{{ s.title }} ({{
+                    s.duration }} mins, {{ s.location }})</option>
+                {% empty %}
+                <option value="" disabled>No scenes created yet</option>
+                {% endfor %}
+            </select>
 
-<label>Specific Location / Notes</label>
-<input type="text" name="location" placeholder="Specific Call-Time Location" required>
+            <label>Specific Location / Notes</label>
+            <input type="text" name="location" placeholder="Specific Call-Time Location" required>
 
-<button type="submit">📅 Schedule It</button>
+            <button type="submit"> Schedule It</button>
 
-</form>
-</div>
+        </form>
+    </div>
 
 </body>
+
 </html>

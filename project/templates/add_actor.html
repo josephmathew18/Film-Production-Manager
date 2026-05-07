@@ -107,17 +107,17 @@
 <body>
 
 {% if project %}
-<h2>➕ Cast an Actor for {{ project.title }}</h2>
+<h2>Cast an Actor for {{ project.title }}</h2>
 {% else %}
-<h2>➕ Cast an Actor</h2>
+<h2>Cast an Actor</h2>
 {% endif %}
 
 <div class="nav">
     {% if project %}
-    <a href="/project/{{ project.id }}/">⬅️ Back to {{ project.title }}</a>
+    <a href="/project/{{ project.id }}/">⬅Back to {{ project.title }}</a>
     {% endif %}
-    <a href="/home/">🏠 Projects</a>
-    <a href="/dashboard/">📊 Dashboard</a>
+    <a href="/home/">Projects</a>
+    <a href="/dashboard/"> Dashboard</a>
 </div>
 
 <div class="container">
@@ -137,7 +137,7 @@
 <input type="text" name="role" placeholder="Character Role" required>
 <input type="text" name="contact" placeholder="Phone or Email" required>
 
-<button type="submit">💾 Save Actor</button>
+<button type="submit"> Save Actor</button>
 
 </form>
 </div>

@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Admin Control Panel</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-        
+
         body {
             font-family: 'Inter', sans-serif;
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
@@ -20,7 +21,7 @@
             background: rgba(255, 255, 255, 0.95);
             padding: 40px;
             border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(10px);
             text-align: center;
         }
@@ -79,7 +80,7 @@
             font-size: 18px;
             font-weight: 600;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -112,7 +113,7 @@
             border-radius: 8px;
             font-weight: 600;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
             border: 1px solid #e1e8ed;
         }
 
@@ -139,10 +140,11 @@
             background: white;
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         }
 
-        th, td {
+        th,
+        td {
             padding: 15px;
             text-align: left;
             border-bottom: 1px solid #edf2f7;
@@ -165,80 +167,88 @@
         }
     </style>
 </head>
+
 <body>
 
-<div class="container">
-    <h2>👑 Admin Control Panel</h2>
+    <div class="container">
+        <h2>Admin Control Panel</h2>
 
-    <div class="stats-grid">
-        <div class="stat-card">
-            Total Users
-            <span>{{ total_users }}</span>
+        <div class="stats-grid">
+            <div class="stat-card">
+                Total Users
+                <span>{{ total_users }}</span>
+            </div>
+            <div class="stat-card">
+                Active Projects
+                <span>{{ total_projects }}</span>
+            </div>
+            <div class="stat-card">
+                Total Expenditures
+                <span>₹{{ total_expenses|floatformat:2 }}</span>
+            </div>
         </div>
-        <div class="stat-card">
-            Active Projects
-            <span>{{ total_projects }}</span>
+
+        <!-- MODULE PORTALS -->
+        <div class="recent-section">
+            <h3>System Modules</h3>
         </div>
-        <div class="stat-card">
-            Total Expenditures
-            <span>₹{{ total_expenses|floatformat:2 }}</span>
+        <div class="modules-grid">
+            <a href="/home/" class="module-card">
+                <span class="module-icon"></span>
+                Production Management
+                <small style="color:#718096; font-size:13px; font-weight:400; text-align:center;">Manage Projects,
+                    Scenes, Crews & Scheduling</small>
+            </a>
+            <a href="/dashboard/" class="module-card">
+                <span class="module-icon"></span>
+                Financial Dashboard
+                <small style="color:#718096; font-size:13px; font-weight:400; text-align:center;">Track budgets and
+                    expenses across all projects</small>
+            </a>
+
         </div>
-    </div>
 
-    <!-- MODULE PORTALS -->
-    <div class="recent-section">
-        <h3>System Modules</h3>
-    </div>
-    <div class="modules-grid">
-        <a href="/home/" class="module-card">
-            <span class="module-icon">🎬</span>
-            Production Management
-            <small style="color:#718096; font-size:13px; font-weight:400; text-align:center;">Manage Projects, Scenes, Crews & Scheduling</small>
-        </a>
-        <a href="/dashboard/" class="module-card">
-            <span class="module-icon">📊</span>
-            Financial Dashboard
-            <small style="color:#718096; font-size:13px; font-weight:400; text-align:center;">Track budgets and expenses across all projects</small>
-        </a>
+        <div class="nav">
+            <a href="/add/"> Quick Add Project</a>
+            <a href="/logout/" style="background:#f8d7da; color:#721c24; border-color:#f5c6cb;"> Logout</a>
+        </div>
+
+        <div class="recent-section">
+            <h3>Recent Projects</h3>
+            <table>
+                <tr>
+                    <th>Title</th>
+                    <th>Image</th>
+                    <th>Director</th>
+                    <th>Genre</th>
+                </tr>
+                {% for p in recent_projects %}
+                <tr>
+                    <td><strong>{{ p.title }}</strong></td>
+                    <td>
+                        {% if p.image %}
+                        <img src="{{ p.image.url }}" alt="{{ p.title }}"
+                            style="width: 40px; height: 40px; object-fit: cover; border-radius: 6px;">
+                        {% else %}
+                        <div
+                            style="width: 40px; height: 40px; background: #e2e8f0; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #a0aec0;">
+                            None</div>
+                        {% endif %}
+                    </td>
+                    <td>{{ p.director }}</td>
+                    <td>{{ p.genre }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" style="text-align:center; color:#718096; font-style:italic;">No projects in the
+                        system.</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
 
     </div>
-
-    <div class="nav">
-        <a href="/add/">➕ Quick Add Project</a>
-        <a href="/logout/" style="background:#f8d7da; color:#721c24; border-color:#f5c6cb;">🚪 Logout</a>
-    </div>
-
-    <div class="recent-section">
-        <h3>Recent Projects</h3>
-        <table>
-            <tr>
-                <th>Title</th>
-                <th>Image</th>
-                <th>Director</th>
-                <th>Genre</th>
-            </tr>
-            {% for p in recent_projects %}
-            <tr>
-                <td><strong>{{ p.title }}</strong></td>
-                <td>
-                    {% if p.image %}
-                        <img src="{{ p.image.url }}" alt="{{ p.title }}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 6px;">
-                    {% else %}
-                        <div style="width: 40px; height: 40px; background: #e2e8f0; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #a0aec0;">None</div>
-                    {% endif %}
-                </td>
-                <td>{{ p.director }}</td>
-                <td>{{ p.genre }}</td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="4" style="text-align:center; color:#718096; font-style:italic;">No projects in the system.</td>
-            </tr>
-            {% endfor %}
-        </table>
-    </div>
-
-</div>
 
 </body>
+
 </html>

@@ -155,20 +155,20 @@
             <img src="{{ project.image.url }}" alt="{{ project.title }}" style="max-width: 100%; max-height: 300px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
         </div>
     {% endif %}
-    <h2>🎬 {{ project.title }}</h2>
+    <h2> {{ project.title }}</h2>
     <div class="subtitle">{{ project.genre }} | Directed by {{ project.director }}</div>
 
     <div class="top-bar">
-        <a href="/home/" class="action-btn">🏠 Back to Projects</a>
-        <a href="/dashboard/" class="action-btn">📊 Financial Dashboard</a>
+        <a href="/home/" class="action-btn"> Back to Projects</a>
+        <a href="/dashboard/" class="action-btn"> Financial Dashboard</a>
     </div>
 
     <!-- ACTORS SECTION -->
     <div class="section-box">
         <div class="section-header">
-            <h3>🎭 Cast & Crew</h3>
+            <h3> Cast & Crew</h3>
             {% if request.user.userprofile.role == 'admin' or request.user.is_superuser %}
-            <a href="/project/{{ project.id }}/add-actor/" class="action-btn">➕ Add Actor</a>
+            <a href="/project/{{ project.id }}/add-actor/" class="action-btn"> Add Actor</a>
             {% endif %}
         </div>
         <table>
@@ -185,7 +185,7 @@
                 <td>{{ a.contact }}</td>
                 <td>
                     {% if request.user.userprofile.role == 'admin' or request.user.is_superuser %}
-                    <a href="/actor/delete/{{ a.id }}/" class="action-btn delete" style="padding: 4px 8px; font-size: 12px;">❌ Remove</a>
+                    <a href="/actor/delete/{{ a.id }}/" class="action-btn delete" style="padding: 4px 8px; font-size: 12px;"> Remove</a>
                     {% else %}
                     -
                     {% endif %}
@@ -202,9 +202,9 @@
     <!-- SCENES SECTION -->
     <div class="section-box">
         <div class="section-header">
-            <h3>📜 Scene Breakdown</h3>
+            <h3> Scene Breakdown</h3>
             {% if request.user.userprofile.role == 'admin' or request.user.userprofile.role == 'production_manager' or request.user.is_superuser %}
-            <a href="/project/{{ project.id }}/add-scene/" class="action-btn">➕ Add Scene</a>
+            <a href="/project/{{ project.id }}/add-scene/" class="action-btn"> Add Scene</a>
             {% endif %}
         </div>
         <table>
@@ -229,8 +229,8 @@
                 </td>
                 <td>
                     {% if request.user.userprofile.role == 'admin' or request.user.userprofile.role == 'production_manager' or request.user.is_superuser %}
-                    <a href="/scene/update/{{ s.id }}/" class="action-btn" style="padding: 4px 8px; font-size: 12px; margin-bottom: 4px;">✏️ Edit</a><br>
-                    <a href="/scene/delete/{{ s.id }}/" class="action-btn delete" style="padding: 4px 8px; font-size: 12px;">❌ Remove</a>
+                    <a href="/scene/update/{{ s.id }}/" class="action-btn" style="padding: 4px 8px; font-size: 12px; margin-bottom: 4px;"> Edit</a><br>
+                    <a href="/scene/delete/{{ s.id }}/" class="action-btn delete" style="padding: 4px 8px; font-size: 12px;"> Remove</a>
                     {% else %}
                     -
                     {% endif %}
@@ -247,9 +247,9 @@
     <!-- SCHEDULE SECTION -->
     <div class="section-box">
         <div class="section-header">
-            <h3>📅 Shooting Schedule</h3>
+            <h3> Shooting Schedule</h3>
             {% if request.user.userprofile.role == 'admin' or request.user.userprofile.role == 'production_manager' or request.user.is_superuser %}
-            <a href="/project/{{ project.id }}/add-schedule/" class="action-btn">➕ Add Date</a>
+            <a href="/project/{{ project.id }}/add-schedule/" class="action-btn"> Add Date</a>
             {% endif %}
         </div>
         <table>
@@ -266,7 +266,7 @@
                 <td>{{ sched.location }}</td>
                 <td>
                     {% if request.user.userprofile.role == 'admin' or request.user.userprofile.role == 'production_manager' or request.user.is_superuser %}
-                    <a href="/schedule/delete/{{ sched.id }}/" class="action-btn delete" style="padding: 4px 8px; font-size: 12px;">❌ Remove</a>
+                    <a href="/schedule/delete/{{ sched.id }}/" class="action-btn delete" style="padding: 4px 8px; font-size: 12px;"> Remove</a>
                     {% else %}
                     -
                     {% endif %}

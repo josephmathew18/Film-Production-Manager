@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Add Project</title>
     <style>
@@ -40,7 +41,7 @@
             border-radius: 8px;
             font-weight: 600;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
             border: 1px solid #e1e8ed;
         }
 
@@ -57,12 +58,12 @@
             background: rgba(255, 255, 255, 0.95);
             padding: 40px;
             border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(10px);
             text-align: center;
         }
 
-        input[type="text"], 
+        input[type="text"],
         textarea {
             width: 100%;
             padding: 14px 16px;
@@ -77,7 +78,7 @@
             transition: all 0.2s ease;
         }
 
-        input[type="text"]:focus, 
+        input[type="text"]:focus,
         textarea:focus {
             outline: none;
             border-color: #4a90e2;
@@ -134,40 +135,46 @@
         }
     </style>
 </head>
+
 <body>
 
-<h2>➕ Add Film Project</h2>
+    <h2> Add Film Project</h2>
 
-<div class="nav">
-    <a href="/home/">🏠 Home</a>
-    <a href="/dashboard/">📊 Dashboard</a>
-    <a href="/logout/">🚪 Logout</a>
-</div>
+    <div class="nav">
+        <a href="/home/"> Home</a>
+        <a href="/dashboard/"> Dashboard</a>
+        <a href="/logout/"> Logout</a>
+    </div>
 
-<div class="container">
-<form method="post" enctype="multipart/form-data">
-{% csrf_token %}
+    <div class="container">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
 
-{% if success %}
-<div class="success-msg">✅ Project added successfully!</div>
-{% endif %}
+            {% if success %}
+            <div class="success-msg"> Project added successfully!</div>
+            {% endif %}
 
-<input type="text" name="title" placeholder="Project Title" required>
-<input type="text" name="genre" placeholder="Genre" required>
-<input type="text" name="director" placeholder="Director" required>
+            <input type="text" name="title" placeholder="Project Title" required>
+            <input type="text" name="genre" placeholder="Genre" required>
+            <input type="text" name="director" placeholder="Director" required>
 
-<label style="display:block; text-align:left; color:#4a5568; font-weight:500; font-size:14px; margin-bottom:5px;">Script PDF:</label>
-<input type="file" name="script" accept=".pdf">
+            <label
+                style="display:block; text-align:left; color:#4a5568; font-weight:500; font-size:14px; margin-bottom:5px;">Script
+                PDF:</label>
+            <input type="file" name="script" accept=".pdf">
 
-<label style="display:block; text-align:left; color:#4a5568; font-weight:500; font-size:14px; margin-bottom:5px;">Cover Image:</label>
-<input type="file" name="image" accept="image/*">
+            <label
+                style="display:block; text-align:left; color:#4a5568; font-weight:500; font-size:14px; margin-bottom:5px;">Cover
+                Image:</label>
+            <input type="file" name="image" accept="image/*">
 
-<textarea name="description" placeholder="Description" required></textarea>
+            <textarea name="description" placeholder="Description" required></textarea>
 
-<button type="submit">💾 Save Project</button>
+            <button type="submit"> Save Project</button>
 
-</form>
-</div>
+        </form>
+    </div>
 
 </body>
+
 </html>

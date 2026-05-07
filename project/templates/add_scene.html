@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Add Scene to {{ project.title }}</title>
     <style>
@@ -40,7 +41,7 @@
             border-radius: 8px;
             font-weight: 600;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
             border: 1px solid #e1e8ed;
         }
 
@@ -57,12 +58,15 @@
             background: rgba(255, 255, 255, 0.95);
             padding: 40px;
             border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(10px);
             text-align: center;
         }
 
-        input[type="text"], input[type="number"], select, textarea {
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
             width: 100%;
             padding: 14px 16px;
             margin: 10px 0 20px;
@@ -76,7 +80,10 @@
             transition: all 0.2s ease;
         }
 
-        input[type="text"]:focus, input[type="number"]:focus, select:focus, textarea:focus {
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus,
+        textarea:focus {
             outline: none;
             border-color: #4a90e2;
             background: #ffffff;
@@ -87,7 +94,7 @@
             height: 100px;
             resize: vertical;
         }
-        
+
         select[multiple] {
             height: 120px;
         }
@@ -122,67 +129,69 @@
         }
     </style>
 </head>
+
 <body>
 
-{% if project %}
-<h2>🎬 Add Scene To {{ project.title }}</h2>
-{% else %}
-<h2>🎬 Add Scene</h2>
-{% endif %}
-
-<div class="nav">
     {% if project %}
-    <a href="/project/{{ project.id }}/">⬅️ Back to {{ project.title }}</a>
+    <h2> Add Scene To {{ project.title }}</h2>
+    {% else %}
+    <h2> Add Scene</h2>
     {% endif %}
-    <a href="/home/">🏠 Projects</a>
-    <a href="/dashboard/">📊 Dashboard</a>
-</div>
 
-<div class="container">
-<form method="post">
-{% csrf_token %}
+    <div class="nav">
+        {% if project %}
+        <a href="/project/{{ project.id }}/">Back to {{ project.title }}</a>
+        {% endif %}
+        <a href="/home/"> Projects</a>
+        <a href="/dashboard/"> Dashboard</a>
+    </div>
 
-{% if not project %}
-<label>Project</label>
-<select name="project" required>
-    <option value="" disabled selected>Select Project</option>
-    {% for p in projects %}
-    <option value="{{ p.id }}">{{ p.title }}</option>
-    {% endfor %}
-</select>
-{% endif %}
+    <div class="container">
+        <form method="post">
+            {% csrf_token %}
 
-<label>Scene Title</label>
-<input type="text" name="title" placeholder="E.g., Opening Monologue" required>
+            {% if not project %}
+            <label>Project</label>
+            <select name="project" required>
+                <option value="" disabled selected>Select Project</option>
+                {% for p in projects %}
+                <option value="{{ p.id }}">{{ p.title }}</option>
+                {% endfor %}
+            </select>
+            {% endif %}
 
-<label>Description</label>
-<textarea name="description" placeholder="Brief outline of the scene" required></textarea>
+            <label>Scene Title</label>
+            <input type="text" name="title" placeholder="E.g., Opening Monologue" required>
 
-<label>Location</label>
-<input type="text" name="location" placeholder="E.g., Coffee Shop, Interior" required>
+            <label>Description</label>
+            <textarea name="description" placeholder="Brief outline of the scene" required></textarea>
 
-<label>Estimated Duration (Minutes)</label>
-<input type="number" name="duration" placeholder="E.g., 5" required>
+            <label>Location</label>
+            <input type="text" name="location" placeholder="E.g., Coffee Shop, Interior" required>
 
-<label>Status</label>
-<select name="status">
-    <option value="pending">Pending</option>
-    <option value="completed">Completed</option>
-</select>
+            <label>Estimated Duration (Minutes)</label>
+            <input type="number" name="duration" placeholder="E.g., 5" required>
 
-<label>Cast Needed (Hold Ctrl/Cmd to select multiple)</label>
-<select name="actors" multiple>
-    {% for a in actors %}
-        <option value="{{ a.id }}">{{ a.name }} ({{ a.role }})</option>
-    {% empty %}
-        <option value="" disabled>No actors created yet</option>
-    {% endfor %}
-</select>
+            <label>Status</label>
+            <select name="status">
+                <option value="pending">Pending</option>
+                <option value="completed">Completed</option>
+            </select>
 
-<button type="submit">💾 Save Scene</button>
+            <label>Cast Needed (Hold Ctrl/Cmd to select multiple)</label>
+            <select name="actors" multiple>
+                {% for a in actors %}
+                <option value="{{ a.id }}">{{ a.name }} ({{ a.role }})</option>
+                {% empty %}
+                <option value="" disabled>No actors created yet</option>
+                {% endfor %}
+            </select>
 
-</form>
-</div>
+            <button type="submit"> Save Scene</button>
+
+        </form>
+    </div>
 
 </body>
+
 </html>

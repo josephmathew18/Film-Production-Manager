@@ -181,10 +181,10 @@
 <body>
 
     <div class="container">
-        <h2>🎬 Production Manager Portal</h2>
+        <h2> Production Manager Portal</h2>
         <div class="info-box">
-            <p style="margin-top: 0;"><strong>✅ Responsibilities</strong><br>Handle day-to-day production work</p>
-            <p><strong>🔧 Features</strong></p>
+            <p style="margin-top: 0;"><strong> Responsibilities</strong><br>Handle day-to-day production work</p>
+            <p><strong> Features</strong></p>
             <ul style="margin-bottom: 15px;">
                 <li>Create & update Scenes</li>
                 <li>Schedule shooting dates</li>
@@ -192,37 +192,37 @@
                 <li>Add expenses</li>
                 <li>Update production status</li>
             </ul>
-            <p style="margin-bottom: 0;"><strong>💡 In short:</strong><br>👉 “Production Manager runs the project”</p>
+            <p style="margin-bottom: 0;"><strong> In short:</strong><br> “Production Manager runs the project”</p>
         </div>
 
         <!-- MODULE PORTALS -->
         <div class="recent-section">
-            <h3>🔧 Your Capabilities</h3>
+            <h3> Your Capabilities</h3>
         </div>
 
         <div class="modules-grid">
             <a href="/add-actor/" class="module-card">
-                <h4>🎭 Assign Actors</h4>
+                <h4> Assign Actors</h4>
                 <p>Link registered cast members directly to specific scenes so everyone knows their role.</p>
             </a>
             <a href="/add-scene/" class="module-card">
-                <h4>📜 Create & Update Scenes</h4>
+                <h4> Create & Update Scenes</h4>
                 <p>Draft new scene breakdowns for active projects and update production status dynamically.</p>
             </a>
             <a href="/add-schedule/" class="module-card">
-                <h4>📅 Schedule Shooting Dates</h4>
+                <h4> Schedule Shooting Dates</h4>
                 <p>Establish exact shooting dates, map out locations, and organize the timeline efficiently.</p>
             </a>
             <a href="/add-expense/" class="module-card">
-                <h4>💰 Add Expenses</h4>
+                <h4> Add Expenses</h4>
                 <p>Submit and record daily expenditures to keep the overall production budget on track.</p>
             </a>
         </div>
 
         <div class="nav">
-            <a href="/home/">🏠 Go to Projects Hub</a>
-            <a href="/dashboard/">📊 Go to Finance Dashboard</a>
-            <a href="/logout/" style="background:#f8d7da; color:#721c24; border-color:#f5c6cb;">🚪 Logout</a>
+            <a href="/home/"> Go to Projects Hub</a>
+            <a href="/dashboard/"> Go to Finance Dashboard</a>
+            <a href="/logout/" style="background:#f8d7da; color:#721c24; border-color:#f5c6cb;"> Logout</a>
         </div>
 
         <div class="recent-section" style="margin-top: 40px;">
@@ -246,8 +246,8 @@
                     </td>
                     <td>{{ p.director }}</td>
                     <td>
-                        <a href="/project/{{ p.id }}/add-scene/" class="action-chip">➕ Add Scene</a>
-                        <a href="/project/{{ p.id }}/add-schedule/" class="action-chip">📅 Schedule</a>
+                        <a href="/project/{{ p.id }}/add-scene/" class="action-chip"> Add Scene</a>
+                        <a href="/project/{{ p.id }}/add-schedule/" class="action-chip"> Schedule</a>
                     </td>
                 </tr>
                 {% empty %}

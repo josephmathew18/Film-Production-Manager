@@ -267,17 +267,17 @@
 <body>
 
 <div class="container">
-    <h2>🎬 Film Projects</h2>
+    <h2> Film Projects</h2>
 
     <div class="top-bar">
         {% if request.user.userprofile.role == 'admin' or request.user.is_superuser %}
-        <a href="/admin-dashboard/">⚙️ Admin Dashboard</a>
-        <a href="/add/">➕ Add Project</a>
+        <a href="/admin-dashboard/"> Admin Dashboard</a>
+        <a href="/add/"> Add Project</a>
         {% elif request.user.userprofile.role == 'production_manager' %}
-        <a href="/manager-dashboard/">🛠️ Manager Dashboard</a>
+        <a href="/manager-dashboard/"> Manager Dashboard</a>
         {% endif %}
-        <a href="/dashboard/">📊 Financials</a>
-        <a href="/logout/">🚪 Logout</a>
+        <a href="/dashboard/"> Financials</a>
+        <a href="/logout/"> Logout</a>
     </div>
 
     <div class="projects-grid">
