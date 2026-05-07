@@ -145,8 +145,7 @@
 
         <div class="nav">
             <a href="/home/"> Home</a>
-            {% if request.user.userprofile.role == 'admin' or request.user.userprofile.role == 'production_manager' or
-            request.user.is_superuser %}
+            {% if request.user.userprofile.role == 'admin' or request.user.userprofile.role == 'production_manager' or request.user.is_superuser %}
             <a href="/add-expense/"> Add Expense</a>
             {% endif %}
         </div>
