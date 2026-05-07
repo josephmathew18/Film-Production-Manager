@@ -170,6 +170,9 @@
 
     <div class="top-bar">
         <a href="/home/" class="action-btn"> Back to Projects</a>
+        {% if request.user.userprofile.role == 'admin' or request.user.is_superuser %}
+        <a href="/update/{{ project.id }}/" class="action-btn"> Edit Project</a>
+        {% endif %}
         <a href="/dashboard/" class="action-btn"> Financial Dashboard</a>
     </div>
 

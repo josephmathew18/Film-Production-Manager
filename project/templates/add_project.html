@@ -150,9 +150,6 @@
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
 
-            {% if success %}
-            <div class="success-msg"> Project added successfully!</div>
-            {% endif %}
 
             <input type="text" name="title" placeholder="Project Title" required>
             <input type="text" name="genre" placeholder="Genre" required>

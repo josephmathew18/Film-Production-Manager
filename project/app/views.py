@@ -155,7 +155,7 @@ def home(request):
 @allowed_users(['admin'])
 def add_project(request):
     if request.method == 'POST':
-        Project.objects.create(
+        project = Project.objects.create(
             user=request.user,
             title=request.POST['title'],
             genre=request.POST['genre'],
@@ -171,7 +171,7 @@ def add_project(request):
             language=request.POST.get('language'),
             running_time=request.POST.get('running_time')
         )
-        return render(request, 'add_project.html', {'success': True})
+        return redirect(f'/project/{project.id}/')
 
     return render(request, 'add_project.html')
     
