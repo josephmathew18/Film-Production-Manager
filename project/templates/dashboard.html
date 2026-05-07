@@ -145,7 +145,8 @@
 
         <div class="nav">
             <a href="/home/"> Home</a>
-            {% if request.user.userprofile.role == 'admin' or request.user.userprofile.role == 'production_manager' or request.user.is_superuser %}
+            {% if request.user.userprofile.role == 'admin' or request.user.userprofile.role == 'production_manager' or
+            request.user.is_superuser %}
             <a href="/add-expense/"> Add Expense</a>
             {% endif %}
         </div>
@@ -176,7 +177,7 @@
             {% for project in project_expenses %}
             <tr style="background-color: #f1f5f9;">
                 <td colspan="3" style="font-weight: 700; color: #2c3e50; font-size: 16px; padding: 12px 15px;">
-                     {{ project.grouper }}
+                    {{ project.grouper }}
                 </td>
             </tr>
             {% for e in project.list %}

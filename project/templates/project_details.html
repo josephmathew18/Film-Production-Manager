@@ -158,6 +158,16 @@
     <h2> {{ project.title }}</h2>
     <div class="subtitle">{{ project.genre }} | Directed by {{ project.director }}</div>
 
+    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; margin-bottom: 30px; display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; font-size: 14px; color: #4a5568;">
+        {% if project.written_by %}<div><strong>Written by:</strong> {{ project.written_by }}</div>{% endif %}
+        {% if project.cinematography %}<div><strong>Cinematography:</strong> {{ project.cinematography }}</div>{% endif %}
+        {% if project.edited_by %}<div><strong>Edited by:</strong> {{ project.edited_by }}</div>{% endif %}
+        {% if project.music_by %}<div><strong>Music by:</strong> {{ project.music_by }}</div>{% endif %}
+        {% if project.release_date %}<div><strong>Release Date:</strong> {{ project.release_date }}</div>{% endif %}
+        {% if project.language %}<div><strong>Language:</strong> {{ project.language }}</div>{% endif %}
+        {% if project.running_time %}<div><strong>Running Time:</strong> {{ project.running_time }}</div>{% endif %}
+    </div>
+
     <div class="top-bar">
         <a href="/home/" class="action-btn"> Back to Projects</a>
         <a href="/dashboard/" class="action-btn"> Financial Dashboard</a>

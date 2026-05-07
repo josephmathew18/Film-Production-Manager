@@ -23,6 +23,14 @@ class Project(models.Model):
     # ✅ Cover Image Upload
     image = models.ImageField(upload_to='project_images/', null=True, blank=True)
 
+    written_by = models.CharField(max_length=100, null=True, blank=True)
+    cinematography = models.CharField(max_length=100, null=True, blank=True)
+    edited_by = models.CharField(max_length=100, null=True, blank=True)
+    music_by = models.CharField(max_length=100, null=True, blank=True)
+    release_date = models.DateField(null=True, blank=True)
+    language = models.CharField(max_length=50, null=True, blank=True)
+    running_time = models.CharField(max_length=50, null=True, blank=True)
+
     def __str__(self):
         return self.title
 # 🎭 Actor

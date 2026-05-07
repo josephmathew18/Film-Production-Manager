@@ -142,7 +142,8 @@
             <select name="scene" required>
                 <option value="" disabled selected>Select Scene</option>
                 {% for s in scenes %}
-                <option value="{{ s.id }}">{% if not project %}{{ s.project.title }} - {% endif %}{{ s.title }} ({{ s.duration }} mins, {{ s.location }})</option>
+                <option value="{{ s.id }}">{% if not project %}{{ s.project.title }} - {% endif %}{{ s.title }} ({{
+                    s.duration }} mins, {{ s.location }})</option>
                 {% empty %}
                 <option value="" disabled>No scenes created yet</option>
                 {% endfor %}

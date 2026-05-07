@@ -7,7 +7,7 @@ from .decorators import allowed_users
 
 @login_required(login_url='/login/')
 def dashboard(request):
-    expenses = Expense.objects.filter(project__user=request.user).select_related('project')
+    expenses = Expense.objects.filter(project__user=request.user).select_related('project') if hasattr(request.user, 'userprofile') and request.user.userprofile.role == 'admin' else Expense.objects.all().select_related('project')
     
     project_id = request.GET.get('project_id')
     if project_id:
@@ -15,7 +15,7 @@ def dashboard(request):
         
     expenses = expenses.order_by('project__title', '-date')
     total = expenses.aggregate(Sum('amount'))['amount__sum'] or 0
-    projects = Project.objects.filter(user=request.user)
+    projects = Project.objects.filter(user=request.user) if hasattr(request.user, 'userprofile') and request.user.userprofile.role == 'admin' else Project.objects.all()
 
     return render(request, 'dashboard.html', {
         'expenses': expenses,
@@ -27,7 +27,7 @@ def dashboard(request):
 @login_required(login_url='/login/')
 @allowed_users(['admin', 'production_manager'])
 def add_expense(request):
-    projects = Project.objects.filter(user=request.user)
+    projects = Project.objects.filter(user=request.user) if hasattr(request.user, 'userprofile') and request.user.userprofile.role == 'admin' else Project.objects.all()
 
     if request.method == 'POST':
         Expense.objects.create(
@@ -143,7 +143,10 @@ def logout_view(request):
 # READ
 @login_required(login_url='/login/')
 def home(request):
-    projects = Project.objects.filter(user=request.user)
+    if hasattr(request.user, 'userprofile') and request.user.userprofile.role == 'admin':
+        projects = Project.objects.filter(user=request.user) if hasattr(request.user, 'userprofile') and request.user.userprofile.role == 'admin' else Project.objects.all()
+    else:
+        projects = Project.objects.all()
     return render(request, 'home.html', {'projects': projects})
 
 
@@ -159,7 +162,14 @@ def add_project(request):
             director=request.POST['director'],
             description=request.POST['description'],
             script=request.FILES.get('script'),   # ✅ IMPORTANT
-            image=request.FILES.get('image')      # ✅ IMPORTANT
+            image=request.FILES.get('image'),      # ✅ IMPORTANT
+            written_by=request.POST.get('written_by'),
+            cinematography=request.POST.get('cinematography'),
+            edited_by=request.POST.get('edited_by'),
+            music_by=request.POST.get('music_by'),
+            release_date=request.POST.get('release_date') or None,
+            language=request.POST.get('language'),
+            running_time=request.POST.get('running_time')
         )
         return render(request, 'add_project.html', {'success': True})
 
@@ -170,7 +180,10 @@ def add_project(request):
 @allowed_users(['admin'])
 def update_project(request, id):
     try:
-        project = Project.objects.get(id=id, user=request.user)
+        if hasattr(request.user, 'userprofile') and request.user.userprofile.role == 'admin':
+            project = Project.objects.get(id=id, user=request.user)
+        else:
+            project = Project.objects.get(id=id)
     except Project.DoesNotExist:
         return redirect('/home/')
 
@@ -179,6 +192,14 @@ def update_project(request, id):
         project.genre = request.POST['genre']
         project.director = request.POST['director']
         project.description = request.POST['description']
+        
+        project.written_by = request.POST.get('written_by')
+        project.cinematography = request.POST.get('cinematography')
+        project.edited_by = request.POST.get('edited_by')
+        project.music_by = request.POST.get('music_by')
+        project.release_date = request.POST.get('release_date') or None
+        project.language = request.POST.get('language')
+        project.running_time = request.POST.get('running_time')
         
         # Check if a new script file was uploaded
         if request.FILES.get('script'):
@@ -210,7 +231,10 @@ def delete_project(request, id):
 @login_required(login_url='/login/')
 def project_details(request, id):
     try:
-        project = Project.objects.get(id=id, user=request.user)
+        if hasattr(request.user, 'userprofile') and request.user.userprofile.role == 'admin':
+            project = Project.objects.get(id=id, user=request.user)
+        else:
+            project = Project.objects.get(id=id)
     except Project.DoesNotExist:
         return redirect('/home/')
         
@@ -231,18 +255,24 @@ def project_details(request, id):
 def add_actor(request, project_id=None):
     if project_id:
         try:
-            project = Project.objects.get(id=project_id, user=request.user)
+            if hasattr(request.user, 'userprofile') and request.user.userprofile.role == 'admin':
+                project = Project.objects.get(id=project_id, user=request.user)
+            else:
+                project = Project.objects.get(id=project_id)
         except Project.DoesNotExist:
             return redirect('/home/')
         projects = None
     else:
         project = None
-        projects = Project.objects.filter(user=request.user)
+        projects = Project.objects.filter(user=request.user) if hasattr(request.user, 'userprofile') and request.user.userprofile.role == 'admin' else Project.objects.all()
 
     if request.method == 'POST':
         pid = project_id if project_id else request.POST.get('project')
         try:
-            p = Project.objects.get(id=pid, user=request.user)
+            if hasattr(request.user, 'userprofile') and request.user.userprofile.role == 'admin':
+                p = Project.objects.get(id=pid, user=request.user)
+            else:
+                p = Project.objects.get(id=pid)
         except Project.DoesNotExist:
             return redirect('/home/')
             
@@ -260,7 +290,7 @@ def add_actor(request, project_id=None):
 @allowed_users(['admin'])
 def delete_actor(request, id):
     try:
-        actor = Actor.objects.get(id=id, project__user=request.user)
+        actor = Actor.objects.get(id=id, project__user=request.user) if hasattr(request.user, 'userprofile') and request.user.userprofile.role == 'admin' else Actor.objects.get(id=id)
         project_id = actor.project.id
         actor.delete()
         return redirect(f'/project/{project_id}/')
@@ -275,20 +305,26 @@ def delete_actor(request, id):
 def add_scene(request, project_id=None):
     if project_id:
         try:
-            project = Project.objects.get(id=project_id, user=request.user)
+            if hasattr(request.user, 'userprofile') and request.user.userprofile.role == 'admin':
+                project = Project.objects.get(id=project_id, user=request.user)
+            else:
+                project = Project.objects.get(id=project_id)
         except Project.DoesNotExist:
             return redirect('/home/')
         projects = None
         actors = Actor.objects.filter(project=project)
     else:
         project = None
-        projects = Project.objects.filter(user=request.user)
-        actors = Actor.objects.filter(project__user=request.user)
+        projects = Project.objects.filter(user=request.user) if hasattr(request.user, 'userprofile') and request.user.userprofile.role == 'admin' else Project.objects.all()
+        actors = Actor.objects.filter(project__user=request.user) if hasattr(request.user, 'userprofile') and request.user.userprofile.role == 'admin' else Actor.objects.all()
 
     if request.method == 'POST':
         pid = project_id if project_id else request.POST.get('project')
         try:
-            p = Project.objects.get(id=pid, user=request.user)
+            if hasattr(request.user, 'userprofile') and request.user.userprofile.role == 'admin':
+                p = Project.objects.get(id=pid, user=request.user)
+            else:
+                p = Project.objects.get(id=pid)
         except Project.DoesNotExist:
             return redirect('/home/')
             
@@ -312,7 +348,7 @@ def add_scene(request, project_id=None):
 @allowed_users(['admin', 'production_manager'])
 def update_scene(request, id):
     try:
-        scene = Scene.objects.get(id=id, project__user=request.user)
+        scene = Scene.objects.get(id=id, project__user=request.user) if hasattr(request.user, 'userprofile') and request.user.userprofile.role == 'admin' else Scene.objects.get(id=id)
         project = scene.project
     except Scene.DoesNotExist:
         return redirect('/home/')
@@ -342,7 +378,7 @@ def update_scene(request, id):
 @allowed_users(['admin', 'production_manager'])
 def delete_scene(request, id):
     try:
-        scene = Scene.objects.get(id=id, project__user=request.user)
+        scene = Scene.objects.get(id=id, project__user=request.user) if hasattr(request.user, 'userprofile') and request.user.userprofile.role == 'admin' else Scene.objects.get(id=id)
         project_id = scene.project.id
         scene.delete()
         return redirect(f'/project/{project_id}/')
@@ -357,20 +393,23 @@ def delete_scene(request, id):
 def add_schedule(request, project_id=None):
     if project_id:
         try:
-            project = Project.objects.get(id=project_id, user=request.user)
+            if hasattr(request.user, 'userprofile') and request.user.userprofile.role == 'admin':
+                project = Project.objects.get(id=project_id, user=request.user)
+            else:
+                project = Project.objects.get(id=project_id)
         except Project.DoesNotExist:
             return redirect('/home/')
         projects = None
         scenes = Scene.objects.filter(project=project)
     else:
         project = None
-        projects = Project.objects.filter(user=request.user)
-        scenes = Scene.objects.filter(project__user=request.user)
+        projects = Project.objects.filter(user=request.user) if hasattr(request.user, 'userprofile') and request.user.userprofile.role == 'admin' else Project.objects.all()
+        scenes = Scene.objects.filter(project__user=request.user) if hasattr(request.user, 'userprofile') and request.user.userprofile.role == 'admin' else Scene.objects.all()
 
     if request.method == 'POST':
         scene_id = request.POST['scene']
         try:
-            scene = Scene.objects.get(id=scene_id, project__user=request.user)
+            scene = Scene.objects.get(id=scene_id, project__user=request.user) if hasattr(request.user, 'userprofile') and request.user.userprofile.role == 'admin' else Scene.objects.get(id=scene_id)
             pid = scene.project.id
         except Scene.DoesNotExist:
             return redirect('/home/')
@@ -388,10 +427,10 @@ def add_schedule(request, project_id=None):
 @allowed_users(['admin', 'production_manager'])
 def delete_schedule(request, id):
     try:
-        schedule = Schedule.objects.get(id=id, scene__project__user=request.user)
+        schedule = Schedule.objects.get(id=id, scene__project__user=request.user) if hasattr(request.user, 'userprofile') and request.user.userprofile.role == 'admin' else Schedule.objects.get(id=id)
         project_id = schedule.scene.project.id
         schedule.delete()
         return redirect(f'/project/{project_id}/')
     except Schedule.DoesNotExist:
         pass
-    return redirect('/home/')
+    return redirect('/home/')
