@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Production Manager Portal</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 40px;
+            color: #333;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 32px;
+            color: #2c3e50;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: #718096;
+            margin-bottom: 35px;
+            font-size: 16px;
+        }
+
+        /* MODULE GRID STYLES */
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+            text-align: left;
+        }
+
+        .module-card {
+            background: #ffffff;
+            border: 2px solid #e1e8ed;
+            padding: 30px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #2d3748;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+
+        .module-card h4 {
+            margin: 0 0 10px 0;
+            font-size: 20px;
+            color: #4a90e2;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .module-card p {
+            margin: 0;
+            color: #718096;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .module-card:hover {
+            transform: translateY(-5px);
+            border-color: #4a90e2;
+            box-shadow: 0 10px 20px rgba(74, 144, 226, 0.15);
+        }
+
+        .nav {
+            margin-bottom: 35px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .nav a {
+            padding: 12px 24px;
+            background: #ffffff;
+            color: #4a90e2;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e1e8ed;
+        }
+
+        .nav a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(74, 144, 226, 0.15);
+            background: #4a90e2;
+            color: white;
+        }
+
+        .recent-section {
+            text-align: left;
+        }
+
+        .recent-section h3 {
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+
+        .info-box {
+            background: #ebf8ff;
+            border: 1px solid #90cdf4;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            text-align: left;
+            color: #2b6cb0;
+            font-size: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        th,
+        td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        th {
+            background: #f8fafc;
+            font-weight: 600;
+            color: #4a5568;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .action-chip {
+            background: #e2e8f0;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            text-decoration: none;
+            color: #4a5568;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .action-chip:hover {
+            background: #cbd5e0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>🎬 Production Manager Portal</h2>
+        <div class="info-box">
+            <p style="margin-top: 0;"><strong>✅ Responsibilities</strong><br>Handle day-to-day production work</p>
+            <p><strong>🔧 Features</strong></p>
+            <ul style="margin-bottom: 15px;">
+                <li>Create & update Scenes</li>
+                <li>Schedule shooting dates</li>
+                <li>Assign actors to scenes</li>
+                <li>Add expenses</li>
+                <li>Update production status</li>
+            </ul>
+            <p style="margin-bottom: 0;"><strong>💡 In short:</strong><br>👉 “Production Manager runs the project”</p>
+        </div>
+
+        <!-- MODULE PORTALS -->
+        <div class="recent-section">
+            <h3>🔧 Your Capabilities</h3>
+        </div>
+
+        <div class="modules-grid">
+            <a href="/add-actor/" class="module-card">
+                <h4>🎭 Assign Actors</h4>
+                <p>Link registered cast members directly to specific scenes so everyone knows their role.</p>
+            </a>
+            <a href="/add-scene/" class="module-card">
+                <h4>📜 Create & Update Scenes</h4>
+                <p>Draft new scene breakdowns for active projects and update production status dynamically.</p>
+            </a>
+            <a href="/add-schedule/" class="module-card">
+                <h4>📅 Schedule Shooting Dates</h4>
+                <p>Establish exact shooting dates, map out locations, and organize the timeline efficiently.</p>
+            </a>
+            <a href="/add-expense/" class="module-card">
+                <h4>💰 Add Expenses</h4>
+                <p>Submit and record daily expenditures to keep the overall production budget on track.</p>
+            </a>
+        </div>
+
+        <div class="nav">
+            <a href="/home/">🏠 Go to Projects Hub</a>
+            <a href="/dashboard/">📊 Go to Finance Dashboard</a>
+            <a href="/logout/" style="background:#f8d7da; color:#721c24; border-color:#f5c6cb;">🚪 Logout</a>
+        </div>
+
+        <div class="recent-section" style="margin-top: 40px;">
+            <h3>Jump Into a Project</h3>
+            <table>
+                <tr>
+                    <th>Title</th>
+                    <th>Director</th>
+                    <th>Quick Actions</th>
+                </tr>
+                {% for p in recent_projects %}
+                <tr>
+                    <td><strong><a href="/project/{{ p.id }}/" style="color:#4a90e2; text-decoration:none;">{{ p.title
+                                }}</a></strong></td>
+                    <td>{{ p.director }}</td>
+                    <td>
+                        <a href="/project/{{ p.id }}/add-scene/" class="action-chip">➕ Add Scene</a>
+                        <a href="/project/{{ p.id }}/add-schedule/" class="action-chip">📅 Schedule</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3" style="text-align:center; color:#718096; font-style:italic;">No active projects
+                        available to manage.</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

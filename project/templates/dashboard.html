@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 40px;
+            color: #333;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 32px;
+            color: #2c3e50;
+            margin-top: 0;
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        .nav {
+            margin-bottom: 35px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .nav a {
+            padding: 12px 24px;
+            background: #ffffff;
+            color: #4a90e2;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid #e1e8ed;
+        }
+
+        .nav a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(74, 144, 226, 0.15);
+            background: #4a90e2;
+            color: white;
+        }
+
+        .total-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 35px;
+            font-size: 24px;
+            font-weight: 600;
+            box-shadow: 0 8px 15px rgba(118, 75, 162, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .total-box:hover {
+            transform: translateY(-3px);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        th, td {
+            padding: 18px 15px;
+            text-align: left;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        th {
+            background: #f8fafc;
+            font-weight: 600;
+            color: #4a5568;
+            text-transform: uppercase;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr {
+            transition: background-color 0.2s ease;
+        }
+
+        tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .badge {
+            background: #e2e8f0;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #4a5568;
+            display: inline-block;
+        }
+
+        .amount {
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 16px;
+        }
+        
+        .empty-state {
+            text-align: center !important;
+            padding: 40px !important;
+            color: #718096;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>📊 Dashboard</h2>
+
+    <div class="nav">
+        <a href="/home/">🏠 Home</a>
+        {% if request.user.userprofile.role == 'admin' or request.user.userprofile.role == 'production_manager' or request.user.is_superuser %}
+        <a href="/add-expense/">💰 Add Expense</a>
+        {% endif %}
+    </div>
+
+    <!-- Project Filter -->
+    <form method="get" style="margin-bottom: 25px; text-align: center;">
+        <select name="project_id" onchange="this.form.submit()" style="width: 100%; max-width: 300px; padding: 12px 16px; border-radius: 8px; border: 1px solid #e2e8f0; background: #f8fafc; font-family: 'Inter', sans-serif; font-size: 15px; color: #2d3748; cursor: pointer; outline: none; box-shadow: 0 2px 5px rgba(0,0,0,0.02); transition: all 0.2s ease;">
+            <option value="">All Projects</option>
+            {% for p in projects %}
+                <option value="{{ p.id }}" {% if selected_project_id == p.id %}selected{% endif %}>{{ p.title }}</option>
+            {% endfor %}
+        </select>
+    </form>
+
+    <div class="total-box">
+        💰 Total Expense: ₹{{ total|floatformat:2 }}
+    </div>
+
+    <table>
+        <tr>
+            <th>Category</th>
+            <th>Amount</th>
+            <th>Date</th>
+        </tr>
+
+        {% regroup expenses by project.title as project_expenses %}
+        {% for project in project_expenses %}
+            <tr style="background-color: #f1f5f9;">
+                <td colspan="3" style="font-weight: 700; color: #2c3e50; font-size: 16px; padding: 12px 15px;">
+                    🎬 {{ project.grouper }}
+                </td>
+            </tr>
+            {% for e in project.list %}
+            <tr>
+                <td><span class="badge">{{ e.category }}</span></td>
+                <td class="amount">₹{{ e.amount }}</td>
+                <td style="color: #718096; font-size: 14px;">{{ e.date }}</td>
+            </tr>
+            {% endfor %}
+        {% empty %}
+        <tr>
+            <td colspan="3" class="empty-state">No expenses found. Add some to get started!</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ project.title }} - Production Hub</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 40px;
+            color: #333;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        h2 {
+            font-size: 32px;
+            color: #2c3e50;
+            margin-top: 0;
+            margin-bottom: 5px;
+            font-weight: 700;
+            text-align: center;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #718096;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        .top-bar {
+            margin-bottom: 35px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .action-btn {
+            display: inline-block;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            background: #ffffff;
+            color: #4a90e2;
+            border: 1px solid #e1e8ed;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(74, 144, 226, 0.15);
+            background: #4a90e2;
+            color: white;
+        }
+        
+        .action-btn.delete {
+            background: #fff;
+            color: #e53e3e;
+            border-color: #feb2b2;
+        }
+        .action-btn.delete:hover {
+            background: #e53e3e;
+            color: white;
+            border-color: #e53e3e;
+            box-shadow: 0 4px 8px rgba(229, 62, 62, 0.15);
+        }
+
+        .section-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-header h3 {
+            margin: 0;
+            color: #2d3748;
+            font-size: 22px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            border: 1px solid #edf2f7;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #edf2f7;
+            font-size: 14px;
+        }
+
+        th {
+            background: #f1f5f9;
+            font-weight: 600;
+            color: #4a5568;
+            text-transform: uppercase;
+            font-size: 12px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .badge {
+            background: #e2e8f0;
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            color: #4a5568;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 20px;
+            color: #a0aec0;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>🎬 {{ project.title }}</h2>
+    <div class="subtitle">{{ project.genre }} | Directed by {{ project.director }}</div>
+
+    <div class="top-bar">
+        <a href="/home/" class="action-btn">🏠 Back to Projects</a>
+        <a href="/dashboard/" class="action-btn">📊 Financial Dashboard</a>
+    </div>
+
+    <!-- ACTORS SECTION -->
+    <div class="section-box">
+        <div class="section-header">
+            <h3>🎭 Cast & Crew</h3>
+            {% if request.user.userprofile.role == 'admin' or request.user.is_superuser %}
+            <a href="/project/{{ project.id }}/add-actor/" class="action-btn">➕ Add Actor</a>
+            {% endif %}
+        </div>
+        <table>
+            <tr>
+                <th>Actor Name</th>
+                <th>Role</th>
+                <th>Contact</th>
+                <th>Actions</th>
+            </tr>
+            {% for a in actors %}
+            <tr>
+                <td><strong>{{ a.name }}</strong></td>
+                <td><span class="badge">{{ a.role }}</span></td>
+                <td>{{ a.contact }}</td>
+                <td>
+                    {% if request.user.userprofile.role == 'admin' or request.user.is_superuser %}
+                    <a href="/actor/delete/{{ a.id }}/" class="action-btn delete" style="padding: 4px 8px; font-size: 12px;">❌ Remove</a>
+                    {% else %}
+                    -
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" class="empty-state">No actors cast yet.</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <!-- SCENES SECTION -->
+    <div class="section-box">
+        <div class="section-header">
+            <h3>📜 Scene Breakdown</h3>
+            {% if request.user.userprofile.role == 'admin' or request.user.userprofile.role == 'production_manager' or request.user.is_superuser %}
+            <a href="/project/{{ project.id }}/add-scene/" class="action-btn">➕ Add Scene</a>
+            {% endif %}
+        </div>
+        <table>
+            <tr>
+                <th>Title</th>
+                <th>Location</th>
+                <th>Duration</th>
+                <th>Status</th>
+                <th>Actors</th>
+                <th>Actions</th>
+            </tr>
+            {% for s in scenes %}
+            <tr>
+                <td><strong>{{ s.title }}</strong><br><small style="color: #718096;">{{ s.description }}</small></td>
+                <td>{{ s.location }}</td>
+                <td>{{ s.duration }} mins</td>
+                <td><span class="badge" {% if s.status == 'completed' %}style="background:#d4edda;color:#155724;"{% endif %}>{{ s.status }}</span></td>
+                <td>
+                    {% for sa in s.actors.all %}
+                        <span class="badge" style="margin-bottom: 2px;">{{ sa.name }}</span>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% if request.user.userprofile.role == 'admin' or request.user.userprofile.role == 'production_manager' or request.user.is_superuser %}
+                    <a href="/scene/update/{{ s.id }}/" class="action-btn" style="padding: 4px 8px; font-size: 12px; margin-bottom: 4px;">✏️ Edit</a><br>
+                    <a href="/scene/delete/{{ s.id }}/" class="action-btn delete" style="padding: 4px 8px; font-size: 12px;">❌ Remove</a>
+                    {% else %}
+                    -
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="empty-state">No scenes created yet.</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <!-- SCHEDULE SECTION -->
+    <div class="section-box">
+        <div class="section-header">
+            <h3>📅 Shooting Schedule</h3>
+            {% if request.user.userprofile.role == 'admin' or request.user.userprofile.role == 'production_manager' or request.user.is_superuser %}
+            <a href="/project/{{ project.id }}/add-schedule/" class="action-btn">➕ Add Date</a>
+            {% endif %}
+        </div>
+        <table>
+            <tr>
+                <th>Date</th>
+                <th>Scene</th>
+                <th>Location Details</th>
+                <th>Actions</th>
+            </tr>
+            {% for sched in schedules %}
+            <tr>
+                <td><strong>{{ sched.date }}</strong></td>
+                <td>{{ sched.scene.title }}</td>
+                <td>{{ sched.location }}</td>
+                <td>
+                    {% if request.user.userprofile.role == 'admin' or request.user.userprofile.role == 'production_manager' or request.user.is_superuser %}
+                    <a href="/schedule/delete/{{ sched.id }}/" class="action-btn delete" style="padding: 4px 8px; font-size: 12px;">❌ Remove</a>
+                    {% else %}
+                    -
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" class="empty-state">No shoot dates scheduled.</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+</div>
+
+</body>
+</html>

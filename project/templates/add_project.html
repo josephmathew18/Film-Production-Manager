@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Project</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 40px;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h2 {
+            font-size: 32px;
+            color: #2c3e50;
+            margin-top: 0;
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        .nav {
+            margin-bottom: 35px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .nav a {
+            padding: 12px 24px;
+            background: #ffffff;
+            color: #4a90e2;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid #e1e8ed;
+        }
+
+        .nav a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(74, 144, 226, 0.15);
+            background: #4a90e2;
+            color: white;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            text-align: center;
+        }
+
+        input[type="text"], 
+        textarea {
+            width: 100%;
+            padding: 14px 16px;
+            margin: 10px 0 20px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            background: #f8fafc;
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            color: #2d3748;
+            box-sizing: border-box;
+            transition: all 0.2s ease;
+        }
+
+        input[type="text"]:focus, 
+        textarea:focus {
+            outline: none;
+            border-color: #4a90e2;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+        }
+
+        textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0 20px;
+            border-radius: 8px;
+            border: 1px dashed #cbd5e0;
+            background: #f8fafc;
+            font-family: 'Inter', sans-serif;
+            color: #4a5568;
+            box-sizing: border-box;
+            cursor: pointer;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(56, 239, 125, 0.3);
+            margin-top: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(56, 239, 125, 0.4);
+        }
+
+        .success-msg {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            font-weight: 500;
+            border: 1px solid #c3e6cb;
+        }
+    </style>
+</head>
+<body>
+
+<h2>➕ Add Film Project</h2>
+
+<div class="nav">
+    <a href="/home/">🏠 Home</a>
+    <a href="/dashboard/">📊 Dashboard</a>
+    <a href="/logout/">🚪 Logout</a>
+</div>
+
+<div class="container">
+<form method="post" enctype="multipart/form-data">
+{% csrf_token %}
+
+{% if success %}
+<div class="success-msg">✅ Project added successfully!</div>
+{% endif %}
+
+<input type="text" name="title" placeholder="Project Title" required>
+<input type="text" name="genre" placeholder="Genre" required>
+<input type="text" name="director" placeholder="Director" required>
+
+<input type="file" name="script" accept=".pdf">
+
+<textarea name="description" placeholder="Description" required></textarea>
+
+<button type="submit">💾 Save Project</button>
+
+</form>
+</div>
+
+</body>
+</html>

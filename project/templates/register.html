@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register - Film Production Manager</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 40px;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .auth-box {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px 50px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 28px;
+            color: #2c3e50;
+            margin-top: 0;
+            margin-bottom: 25px;
+            font-weight: 700;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            text-align: left;
+        }
+
+        label {
+            font-weight: 600;
+            color: #4a5568;
+            font-size: 14px;
+            margin-bottom: -5px;
+        }
+
+        input, select {
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e0;
+            font-size: 15px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s ease;
+            outline: none;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        input:focus, select:focus {
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+        }
+
+        button {
+            margin-top: 10px;
+            background: #4a90e2;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(74, 144, 226, 0.2);
+        }
+
+        button:hover {
+            background: #357abd;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(74, 144, 226, 0.3);
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .links {
+            margin-top: 25px;
+            font-size: 14px;
+            color: #718096;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .links a {
+            color: #4a90e2;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="auth-box">
+    <h2>📝 Create Account</h2>
+    
+    {% if error %}
+        <div class="error">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        <label>Username</label>
+        <input type="text" name="username" required placeholder="Enter username">
+
+        <label>Role / Position</label>
+        <select name="role" required>
+            <option value="production_manager">🎬 Production Manager</option>
+            <option value="viewer">👤 User (Viewer Only)</option>
+        </select>
+
+        <label>Password</label>
+        <input type="password" name="password" required placeholder="Create a password">
+
+        <button type="submit">Register Now</button>
+    </form>
+
+    <div class="links">
+        Already have an account? <a href="/login/">Log in here</a>
+    </div>
+</div>
+
+</body>
+</html>

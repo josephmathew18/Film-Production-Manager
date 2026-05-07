@@ -1,0 +1,6 @@
+Username: admin_user
+Password: admin123
+Username: manager_user
+Password: manager123
+Username: viewer_user
+Password: viewer123
