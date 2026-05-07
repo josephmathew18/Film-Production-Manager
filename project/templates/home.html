@@ -271,9 +271,12 @@
 
     <div class="top-bar">
         {% if request.user.userprofile.role == 'admin' or request.user.is_superuser %}
+        <a href="/admin-dashboard/">⚙️ Admin Dashboard</a>
         <a href="/add/">➕ Add Project</a>
+        {% elif request.user.userprofile.role == 'production_manager' %}
+        <a href="/manager-dashboard/">🛠️ Manager Dashboard</a>
         {% endif %}
-        <a href="/dashboard/">📊 Dashboard</a>
+        <a href="/dashboard/">📊 Financials</a>
         <a href="/logout/">🚪 Logout</a>
     </div>
 
