@@ -150,6 +150,11 @@
 <body>
 
 <div class="container">
+    {% if project.image %}
+        <div style="text-align: center; margin-bottom: 20px;">
+            <img src="{{ project.image.url }}" alt="{{ project.title }}" style="max-width: 100%; max-height: 300px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+        </div>
+    {% endif %}
     <h2>🎬 {{ project.title }}</h2>
     <div class="subtitle">{{ project.genre }} | Directed by {{ project.director }}</div>
 

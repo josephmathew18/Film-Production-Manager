@@ -158,7 +158,8 @@ def add_project(request):
             genre=request.POST['genre'],
             director=request.POST['director'],
             description=request.POST['description'],
-            script=request.FILES.get('script')   # ✅ IMPORTANT
+            script=request.FILES.get('script'),   # ✅ IMPORTANT
+            image=request.FILES.get('image')      # ✅ IMPORTANT
         )
         return render(request, 'add_project.html', {'success': True})
 
@@ -182,6 +183,10 @@ def update_project(request, id):
         # Check if a new script file was uploaded
         if request.FILES.get('script'):
             project.script = request.FILES.get('script')
+            
+        # Check if a new image was uploaded
+        if request.FILES.get('image'):
+            project.image = request.FILES.get('image')
             
         project.save()
         return redirect('/home/')

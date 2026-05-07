@@ -19,6 +19,9 @@ class Project(models.Model):
 
     # ✅ PDF Upload
     script = models.FileField(upload_to='scripts/', null=True, blank=True)
+    
+    # ✅ Cover Image Upload
+    image = models.ImageField(upload_to='project_images/', null=True, blank=True)
 
     def __str__(self):
         return self.title

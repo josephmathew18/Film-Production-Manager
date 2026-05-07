@@ -157,7 +157,16 @@
     <strong>Current Script:</strong> <a href="{{ project.script.url }}" target="_blank">{{ project.script.name }}</a>
 </div>
 {% endif %}
+<label style="display:block; text-align:left; color:#4a5568; font-weight:500; font-size:14px; margin-bottom:5px;">Script PDF:</label>
 <input type="file" name="script" accept=".pdf">
+
+{% if project.image %}
+<div class="current-file">
+    <strong>Current Image:</strong> <img src="{{ project.image.url }}" alt="{{ project.title }}" style="max-width: 100px; max-height: 100px; display: block; margin-top: 5px; border-radius: 4px;">
+</div>
+{% endif %}
+<label style="display:block; text-align:left; color:#4a5568; font-weight:500; font-size:14px; margin-bottom:5px;">Cover Image:</label>
+<input type="file" name="image" accept="image/*">
 
 <textarea name="description" placeholder="Description" required>{{ project.description }}</textarea>
 
