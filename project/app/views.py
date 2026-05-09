@@ -67,9 +67,11 @@ def register_view(request):
 
         user = User.objects.create_user(username=username, password=password)
         
+        actual_role = 'pending_manager' if role == 'production_manager' else role
+        
         # Ensure role is set correctly (overriding default signal)
         if hasattr(user, 'userprofile'):
-            user.userprofile.role = role
+            user.userprofile.role = actual_role
             user.userprofile.save()
 
         login(request, user)
@@ -119,13 +121,28 @@ def admin_dashboard(request):
     total_users = User.objects.count()
     total_expenses = Expense.objects.aggregate(Sum('amount'))['amount__sum'] or 0
     recent_projects = Project.objects.order_by('-id')[:5]
+    pending_managers = User.objects.filter(userprofile__role='pending_manager')
 
     return render(request, 'admin_dashboard.html', {
         'total_projects': total_projects,
         'total_users': total_users,
         'total_expenses': total_expenses,
-        'recent_projects': recent_projects
+        'recent_projects': recent_projects,
+        'pending_managers': pending_managers
     })
+
+@login_required(login_url='/login/')
+@allowed_users(['admin'])
+def approve_manager(request, id):
+    from django.contrib.auth.models import User
+    try:
+        user = User.objects.get(id=id)
+        if hasattr(user, 'userprofile') and user.userprofile.role == 'pending_manager':
+            user.userprofile.role = 'production_manager'
+            user.userprofile.save()
+    except User.DoesNotExist:
+        pass
+    return redirect('/admin-dashboard/')
 
 @login_required(login_url='/login/')
 @allowed_users(['admin', 'production_manager'])

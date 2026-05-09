@@ -90,6 +90,7 @@ class UserProfile(models.Model):
         ('admin', 'Admin'),
         ('production_manager', 'Production Manager'),
         ('viewer', 'Viewer'),
+        ('pending_manager', 'Pending Manager'),
     ]
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     role = models.CharField(max_length=25, choices=ROLE_CHOICES, default='viewer')

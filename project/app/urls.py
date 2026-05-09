@@ -10,6 +10,7 @@ urlpatterns = [
     path('dashboard/', views.dashboard),
     path('admin-dashboard/', views.admin_dashboard),
     path('manager-dashboard/', views.manager_dashboard),
+    path('approve-manager/<int:id>/', views.approve_manager),
 
     path('add/', views.add_project),
     path('update/<int:id>/', views.update_project),
