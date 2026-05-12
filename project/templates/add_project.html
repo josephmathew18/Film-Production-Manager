@@ -165,7 +165,43 @@
 
             <input type="text" name="language" placeholder="Language (Optional)">
             <label style="display:block; text-align:left; color:#4a5568; font-weight:500; font-size:14px; margin-bottom:5px;">Running Time (hr:min:ss):</label>
-            <input type="text" name="running_time" placeholder="00:00:00" pattern="^\d{1,2}:\d{2}:\d{2}$" title="Format: hours:minutes:seconds (e.g. 02:30:00)" style="width: 100%; padding: 14px 16px; margin: 0 0 20px; border-radius: 8px; border: 1px solid #e2e8f0; background: #f8fafc; font-family: 'Inter', sans-serif; font-size: 15px; color: #2d3748; box-sizing: border-box;">
+            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                <select id="rt-hours" required style="flex: 1; padding: 14px 16px; border-radius: 8px; border: 1px solid #e2e8f0; background: #f8fafc; font-family: 'Inter', sans-serif; font-size: 15px; color: #2d3748; outline: none; cursor: pointer;">
+                    <option value="" disabled selected>Hr</option>
+                    <option value="00">00</option><option value="01">01</option><option value="02">02</option>
+                    <option value="03">03</option><option value="04">04</option><option value="05">05</option>
+                    <option value="06">06</option><option value="07">07</option><option value="08">08</option>
+                    <option value="09">09</option><option value="10">10</option>
+                </select>
+                <select id="rt-minutes" required style="flex: 1; padding: 14px 16px; border-radius: 8px; border: 1px solid #e2e8f0; background: #f8fafc; font-family: 'Inter', sans-serif; font-size: 15px; color: #2d3748; outline: none; cursor: pointer;">
+                    <option value="" disabled selected>Min</option>
+                </select>
+                <select id="rt-seconds" required style="flex: 1; padding: 14px 16px; border-radius: 8px; border: 1px solid #e2e8f0; background: #f8fafc; font-family: 'Inter', sans-serif; font-size: 15px; color: #2d3748; outline: none; cursor: pointer;">
+                    <option value="" disabled selected>Sec</option>
+                </select>
+            </div>
+            <input type="hidden" name="running_time" id="running_time_input" required>
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    const minSecOptions = Array.from({length: 60}, (_, i) => `<option value="${String(i).padStart(2, '0')}">${String(i).padStart(2, '0')}</option>`).join('');
+                    document.getElementById('rt-minutes').innerHTML += minSecOptions;
+                    document.getElementById('rt-seconds').innerHTML += minSecOptions;
+
+                    function updateRunningTime() {
+                        const h = document.getElementById('rt-hours').value;
+                        const m = document.getElementById('rt-minutes').value;
+                        const s = document.getElementById('rt-seconds').value;
+                        if (h && m && s) {
+                            document.getElementById('running_time_input').value = `${h}:${m}:${s}`;
+                        }
+                    }
+
+                    document.getElementById('rt-hours').addEventListener('change', updateRunningTime);
+                    document.getElementById('rt-minutes').addEventListener('change', updateRunningTime);
+                    document.getElementById('rt-seconds').addEventListener('change', updateRunningTime);
+                });
+            </script>
 
             <label
                 style="display:block; text-align:left; color:#4a5568; font-weight:500; font-size:14px; margin-bottom:5px;">Script
