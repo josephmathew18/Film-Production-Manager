@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.db.models import Sum
 from .models import Project, Expense, Actor, Scene, Schedule
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ValidationError
 from .decorators import allowed_users
 
 @login_required(login_url='/login/')
@@ -172,23 +173,27 @@ def home(request):
 @allowed_users(['admin'])
 def add_project(request):
     if request.method == 'POST':
-        project = Project.objects.create(
-            user=request.user,
-            title=request.POST['title'],
-            genre=request.POST['genre'],
-            director=request.POST['director'],
-            description=request.POST['description'],
-            script=request.FILES.get('script'),   # ✅ IMPORTANT
-            image=request.FILES.get('image'),      # ✅ IMPORTANT
-            written_by=request.POST.get('written_by'),
-            cinematography=request.POST.get('cinematography'),
-            edited_by=request.POST.get('edited_by'),
-            music_by=request.POST.get('music_by'),
-            release_date=request.POST.get('release_date') or None,
-            language=request.POST.get('language'),
-            running_time=request.POST.get('running_time')
-        )
-        return redirect(f'/project/{project.id}/')
+        try:
+            project = Project.objects.create(
+                user=request.user,
+                title=request.POST['title'],
+                genre=request.POST['genre'],
+                director=request.POST['director'],
+                description=request.POST['description'],
+                script=request.FILES.get('script'),   # ✅ IMPORTANT
+                image=request.FILES.get('image'),      # ✅ IMPORTANT
+                written_by=request.POST.get('written_by'),
+                cinematography=request.POST.get('cinematography'),
+                edited_by=request.POST.get('edited_by'),
+                music_by=request.POST.get('music_by'),
+                release_date=request.POST.get('release_date') or None,
+                language=request.POST.get('language'),
+                running_time=request.POST.get('running_time')
+            )
+            return redirect(f'/project/{project.id}/')
+        except ValidationError as e:
+            error_msg = e.messages[0] if hasattr(e, 'messages') and e.messages else str(e)
+            return render(request, 'add_project.html', {'error': error_msg})
 
     return render(request, 'add_project.html')
     
@@ -205,29 +210,36 @@ def update_project(request, id):
         return redirect('/home/')
 
     if request.method == 'POST':
-        project.title = request.POST['title']
-        project.genre = request.POST['genre']
-        project.director = request.POST['director']
-        project.description = request.POST['description']
-        
-        project.written_by = request.POST.get('written_by')
-        project.cinematography = request.POST.get('cinematography')
-        project.edited_by = request.POST.get('edited_by')
-        project.music_by = request.POST.get('music_by')
-        project.release_date = request.POST.get('release_date') or None
-        project.language = request.POST.get('language')
-        project.running_time = request.POST.get('running_time')
-        
-        # Check if a new script file was uploaded
-        if request.FILES.get('script'):
-            project.script = request.FILES.get('script')
+        try:
+            project.title = request.POST['title']
+            project.genre = request.POST['genre']
+            project.director = request.POST['director']
+            project.description = request.POST['description']
             
-        # Check if a new image was uploaded
-        if request.FILES.get('image'):
-            project.image = request.FILES.get('image')
+            project.written_by = request.POST.get('written_by')
+            project.cinematography = request.POST.get('cinematography')
+            project.edited_by = request.POST.get('edited_by')
+            project.music_by = request.POST.get('music_by')
+            project.release_date = request.POST.get('release_date') or None
+            project.language = request.POST.get('language')
+            project.running_time = request.POST.get('running_time')
             
-        project.save()
-        return redirect('/home/')
+            # Check if a new script file was uploaded
+            if request.FILES.get('script'):
+                project.script = request.FILES.get('script')
+                
+            # Check if a new image was uploaded
+            if request.FILES.get('image'):
+                project.image = request.FILES.get('image')
+                
+            project.save()
+            return redirect('/home/')
+        except ValidationError as e:
+            error_msg = e.messages[0] if hasattr(e, 'messages') and e.messages else str(e)
+            return render(request, 'update_project.html', {
+                'project': project,
+                'error': error_msg
+            })
 
     return render(request, 'update_project.html', {
         'project': project
